@@ -3,505 +3,911 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Xyrr Investments — Off-Market Real Estate Deals</title>
+  <title>XYRR INVESTMENTS — Off-Market Real Estate Deals</title>
   <meta name="description" content="Xyrr Investments sources deeply discounted off-market properties in Memphis, TN and Cleveland, OH for cash buyers, flippers, and BRRRR investors.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg-primary: #0B1120;
-      --bg-section-alt: #111827;
-      --bg-card: #1A2332;
-      --bg-card-border: #2A3444;
-      --accent-gold: #C9A84C;
-      --text-primary: #FFFFFF;
-      --text-secondary: #B0BEC5;
-      --text-muted: #6B7B8D;
-      --tag-bg: #1E2D3D;
-      --tag-text: #C9A84C;
+      --void: #060810;
+      --deep: #0A0E1A;
+      --surface: #0F1423;
+      --elevated: #151B2E;
+      --border: #1E2740;
+      --border-bright: #2A3555;
+      --gold: #C8A44E;
+      --gold-dim: #8B7333;
+      --gold-bright: #E8C864;
+      --gold-glow: rgba(200, 164, 78, 0.08);
+      --gold-glow-strong: rgba(200, 164, 78, 0.15);
+      --white: #F0EDE6;
+      --silver: #9BA3B7;
+      --muted: #5A6380;
+      --faint: #343D58;
+      --font-display: 'Cormorant Garamond', serif;
+      --font-body: 'Outfit', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: var(--font-body);
       font-weight: 400;
-      font-size: 17px;
-      line-height: 1.7;
-      color: var(--text-secondary);
-      background-color: var(--bg-primary);
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--silver);
+      background: var(--void);
+      -webkit-font-smoothing: antialiased;
     }
 
-    .container {
-      max-width: 1200px;
+    /* ═══════════════════════════════════════
+       GEOMETRIC TEXTURES
+    ═══════════════════════════════════════ */
+    .geo-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 80px 80px;
+      opacity: 0.15;
+      pointer-events: none;
+    }
+
+    .geo-diagonal {
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 60px,
+          rgba(200, 164, 78, 0.03) 60px,
+          rgba(200, 164, 78, 0.03) 61px
+        );
+      pointer-events: none;
+    }
+
+    .geo-corner {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border: 1px solid var(--border);
+      pointer-events: none;
+    }
+    .geo-corner--tl { top: 40px; left: 40px; border-right: none; border-bottom: none; }
+    .geo-corner--tr { top: 40px; right: 40px; border-left: none; border-bottom: none; }
+    .geo-corner--bl { bottom: 40px; left: 40px; border-right: none; border-top: none; }
+    .geo-corner--br { bottom: 40px; right: 40px; border-left: none; border-top: none; }
+
+    /* ═══════════════════════════════════════
+       LAYOUT
+    ═══════════════════════════════════════ */
+    .wrap {
+      max-width: 1280px;
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 32px;
     }
 
-    /* ========================
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: clamp(36px, 5vw, 56px);
+      line-height: 1.1;
+      color: var(--white);
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .section-rule {
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      border: none;
+      margin: 0 auto 48px;
+    }
+
+    .section-body {
+      font-size: 17px;
+      line-height: 1.75;
+      color: var(--silver);
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 56px;
+    }
+
+    /* ═══════════════════════════════════════
+       NAVIGATION BAR
+    ═══════════════════════════════════════ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(180deg, var(--void) 0%, transparent 100%);
+    }
+
+    .nav-logo {
+      font-family: var(--font-body);
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 5px;
+      color: var(--white);
+      text-transform: uppercase;
+    }
+
+    .nav-logo span {
+      color: var(--gold);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links li {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ═══════════════════════════════════════
        HERO
-    ======================== */
+    ═══════════════════════════════════════ */
     .hero {
+      position: relative;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-      background-color: var(--bg-primary);
-      padding: 96px 24px;
+      padding: 120px 32px 96px;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 45%, rgba(200, 164, 78, 0.04) 0%, transparent 70%),
+        var(--void);
     }
 
-    .hero-inner {
-      max-width: 700px;
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .hero-eyebrow::before,
+    .hero-eyebrow::after {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: var(--gold-dim);
     }
 
     .hero h1 {
-      font-size: 56px;
-      font-weight: 800;
-      line-height: 1.1;
-      color: var(--text-primary);
-      text-transform: uppercase;
-      letter-spacing: 6px;
-      margin-bottom: 24px;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: clamp(48px, 9vw, 110px);
+      line-height: 0.95;
+      color: var(--white);
+      letter-spacing: -1px;
+      margin-bottom: 36px;
     }
 
-    .hero-rule {
-      width: 60px;
-      height: 2px;
-      background-color: var(--accent-gold);
-      border: none;
-      margin: 0 auto 24px;
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-divider {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(180deg, var(--gold), transparent);
+      margin: 0 auto 32px;
     }
 
     .hero-tagline {
-      font-size: 17px;
-      color: var(--text-secondary);
-      max-width: 600px;
+      font-family: var(--font-body);
+      font-size: clamp(16px, 2vw, 20px);
+      font-weight: 300;
+      color: var(--silver);
+      max-width: 520px;
       margin: 0 auto 12px;
+      letter-spacing: 0.5px;
     }
 
-    .hero-subtagline {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text-muted);
-      margin-bottom: 40px;
+    .hero-sub {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--muted);
+      letter-spacing: 1px;
+      margin-bottom: 48px;
     }
 
     .hero-buttons {
       display: flex;
-      gap: 12px;
+      gap: 16px;
       justify-content: center;
       flex-wrap: wrap;
     }
 
-    .btn-primary {
-      display: inline-block;
-      padding: 14px 32px;
-      font-family: 'Inter', sans-serif;
-      font-size: 15px;
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 36px;
+      font-family: var(--font-mono);
+      font-size: 11px;
       font-weight: 700;
-      line-height: 1;
-      border-radius: 6px;
-      background-color: var(--accent-gold);
-      color: var(--bg-primary);
-      border: 2px solid var(--accent-gold);
-      cursor: pointer;
+      letter-spacing: 3px;
       text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .btn-secondary {
-      display: inline-block;
-      padding: 14px 32px;
-      font-family: 'Inter', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      line-height: 1;
-      border-radius: 6px;
-      background-color: transparent;
-      color: var(--accent-gold);
-      border: 2px solid var(--accent-gold);
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    /* ========================
-       SECTION SHARED
-    ======================== */
-    .section {
-      padding: 96px 24px;
-    }
-
-    .section--alt {
-      background-color: var(--bg-section-alt);
-    }
-
-    .section-headline {
-      font-size: 40px;
-      font-weight: 700;
-      line-height: 1.2;
-      color: var(--text-primary);
-      text-align: center;
-      margin-bottom: 16px;
-    }
-
-    .section-accent {
-      display: block;
-      width: 50px;
-      height: 3px;
-      background-color: var(--accent-gold);
-      margin: 0 auto 40px;
       border: none;
+      cursor: pointer;
     }
 
-    .section-body {
+    .btn--gold {
+      background: var(--gold);
+      color: var(--void);
+    }
+
+    .btn--outline {
+      background: transparent;
+      color: var(--gold);
+      box-shadow: inset 0 0 0 1px var(--gold-dim);
+    }
+
+    .hero-metric-bar {
+      margin-top: 72px;
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+
+    .hero-metric {
       text-align: center;
-      max-width: 720px;
-      margin: 0 auto 48px;
     }
 
-    /* ========================
+    .hero-metric-value {
+      font-family: var(--font-mono);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--gold-bright);
+      line-height: 1;
+    }
+
+    .hero-metric-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    /* ═══════════════════════════════════════
        ABOUT
-    ======================== */
-    .stats-grid {
+    ═══════════════════════════════════════ */
+    .about {
+      position: relative;
+      padding: 120px 32px;
+      background: var(--deep);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .about-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      max-width: 1200px;
+      grid-template-columns: 1fr 1px 1fr 1px 1fr;
+      max-width: 960px;
       margin: 0 auto;
     }
 
-    .stat-box {
-      background-color: var(--bg-card);
-      border: 1px solid var(--bg-card-border);
-      border-radius: 10px;
-      padding: 28px;
+    .about-grid-divider {
+      background: linear-gradient(180deg, transparent, var(--border-bright), transparent);
+    }
+
+    .stat-cell {
+      padding: 40px 32px;
       text-align: center;
     }
 
-    .stat-number {
-      font-size: 32px;
-      font-weight: 800;
-      line-height: 1.1;
-      color: var(--accent-gold);
+    .stat-value {
+      font-family: var(--font-mono);
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
       margin-bottom: 8px;
     }
 
-    .stat-label {
-      font-size: 15px;
-      font-weight: 400;
-      line-height: 1.4;
-      color: var(--text-secondary);
+    .stat-unit {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
     }
 
-    /* ========================
+    .stat-desc {
+      font-size: 14px;
+      color: var(--faint);
+      margin-top: 12px;
+    }
+
+    /* ═══════════════════════════════════════
        DEALS
-    ======================== */
+    ═══════════════════════════════════════ */
+    .deals {
+      padding: 120px 32px;
+      background: var(--void);
+      position: relative;
+    }
+
     .deals-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      max-width: 1200px;
+      gap: 2px;
+      max-width: 1280px;
       margin: 0 auto;
+      background: var(--border);
     }
 
-    .deal-card {
-      background-color: var(--bg-card);
-      border: 1px solid var(--bg-card-border);
-      border-radius: 10px;
-      padding: 28px;
+    .deal {
+      background: var(--surface);
       display: flex;
       flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .deal-header {
+      padding: 28px 28px 20px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .deal-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-dim));
+    }
+
+    .deal-number {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      color: var(--faint);
+      text-transform: uppercase;
+      margin-bottom: 10px;
     }
 
     .deal-address {
-      font-size: 20px;
+      font-family: var(--font-display);
+      font-size: 24px;
       font-weight: 600;
-      line-height: 1.3;
-      color: var(--text-primary);
+      color: var(--white);
+      line-height: 1.2;
       margin-bottom: 4px;
     }
 
     .deal-city {
-      font-size: 14px;
+      font-family: var(--font-mono);
+      font-size: 11px;
       font-weight: 500;
-      color: var(--text-muted);
-      margin-bottom: 16px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .deal-body {
+      padding: 24px 28px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
     }
 
     .deal-specs {
-      font-size: 14px;
+      font-family: var(--font-mono);
+      font-size: 12px;
       font-weight: 500;
-      color: var(--text-secondary);
-      margin-bottom: 16px;
+      color: var(--silver);
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
     }
 
-    .deal-price {
-      font-size: 32px;
-      font-weight: 800;
-      line-height: 1.1;
-      color: var(--accent-gold);
-      margin-bottom: 8px;
+    .deal-financial {
+      margin-bottom: 20px;
     }
 
-    .deal-arv {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text-secondary);
+    .deal-price-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
       margin-bottom: 4px;
     }
 
-    .deal-note {
-      font-size: 14px;
+    .deal-price {
+      font-family: var(--font-mono);
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--gold-bright);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .deal-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .deal-meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 4px 0;
+    }
+
+    .deal-meta-key {
+      color: var(--muted);
       font-weight: 500;
-      color: var(--text-secondary);
-      margin-bottom: 16px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .deal-meta-val {
+      color: var(--silver);
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .deal-note {
+      font-size: 13px;
+      color: var(--gold-dim);
+      font-weight: 500;
+      margin-top: 8px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .deal-footer {
+      padding: 0 28px 28px;
+      margin-top: auto;
     }
 
     .deal-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 24px;
-      margin-top: auto;
+      gap: 6px;
+      margin-bottom: 20px;
     }
 
     .deal-tag {
-      display: inline-block;
-      padding: 6px 14px;
-      font-size: 13px;
-      font-weight: 600;
-      line-height: 1;
-      border-radius: 20px;
-      background-color: var(--tag-bg);
-      color: var(--tag-text);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      background: var(--gold-glow);
+      color: var(--gold);
+      border: 1px solid rgba(200, 164, 78, 0.15);
     }
 
     .deal-btn {
       display: block;
       width: 100%;
-      padding: 14px 32px;
-      font-family: 'Inter', sans-serif;
-      font-size: 15px;
+      padding: 14px;
+      font-family: var(--font-mono);
+      font-size: 10px;
       font-weight: 700;
-      line-height: 1;
-      border-radius: 6px;
-      background-color: var(--accent-gold);
-      color: var(--bg-primary);
-      border: 2px solid var(--accent-gold);
-      cursor: pointer;
+      letter-spacing: 4px;
       text-transform: uppercase;
-      letter-spacing: 1px;
       text-align: center;
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid var(--gold-dim);
+      cursor: pointer;
     }
 
-    /* ========================
+    /* Featured deal (deal 3 & 7 — best spread) */
+    .deal--featured .deal-header::before {
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold-bright), var(--gold), var(--gold-bright));
+    }
+
+    .deal--featured {
+      background: linear-gradient(180deg, var(--elevated) 0%, var(--surface) 100%);
+    }
+
+    /* ═══════════════════════════════════════
        CONTACT
-    ======================== */
-    .contact-info {
+    ═══════════════════════════════════════ */
+    .contact {
+      padding: 120px 32px;
+      background: var(--deep);
+      border-top: 1px solid var(--border);
+      position: relative;
+    }
+
+    .contact-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      max-width: 800px;
-      margin: 0 auto 40px;
+      gap: 2px;
+      max-width: 780px;
+      margin: 0 auto 56px;
+      background: var(--border);
     }
 
-    .contact-block {
+    .contact-cell {
+      background: var(--surface);
+      padding: 36px 24px;
       text-align: center;
     }
 
     .contact-icon {
-      font-size: 28px;
-      margin-bottom: 8px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
     }
 
-    .contact-label {
+    .contact-val {
+      font-family: var(--font-body);
       font-size: 15px;
-      font-weight: 600;
-      color: var(--text-primary);
+      font-weight: 500;
+      color: var(--white);
       margin-bottom: 4px;
     }
 
-    .contact-value {
-      font-size: 14px;
-      color: var(--text-secondary);
+    .contact-hint {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 1px;
     }
 
     .contact-btn-wrap {
       text-align: center;
     }
 
-    /* ========================
+    .btn--large {
+      padding: 20px 56px;
+      font-size: 12px;
+      letter-spacing: 4px;
+    }
+
+    /* ═══════════════════════════════════════
        FOOTER
-    ======================== */
-    footer {
-      background-color: var(--bg-primary);
-      border-top: 1px solid var(--bg-card-border);
-      padding: 40px 24px;
+    ═══════════════════════════════════════ */
+    .footer {
+      padding: 48px 32px;
+      border-top: 1px solid var(--border);
+      background: var(--void);
       text-align: center;
     }
 
-    .footer-line {
-      font-size: 14px;
+    .footer-main {
+      font-family: var(--font-mono);
+      font-size: 11px;
       font-weight: 500;
-      color: var(--text-muted);
-      line-height: 1.8;
+      letter-spacing: 2px;
+      color: var(--faint);
+      margin-bottom: 8px;
     }
 
-    /* ========================
+    .footer-sub {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--faint);
+    }
+
+    .footer-sub span {
+      color: var(--gold-dim);
+    }
+
+    /* ═══════════════════════════════════════
        RESPONSIVE
-    ======================== */
-    @media (max-width: 768px) {
-      .hero h1 {
-        font-size: 36px;
-        letter-spacing: 3px;
-      }
-
-      .hero-tagline {
-        font-size: 16px;
-      }
-
-      .hero-subtagline {
-        font-size: 13px;
-      }
-
-      .section {
-        padding: 64px 24px;
-      }
-
-      .section-headline {
-        font-size: 28px;
-      }
-
-      .stats-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .stat-number {
-        font-size: 24px;
-      }
-
+    ═══════════════════════════════════════ */
+    @media (max-width: 1024px) {
       .deals-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+
+      .hero { padding: 100px 20px 72px; }
+      .hero h1 { letter-spacing: 0; }
+      .hero-metric-bar { gap: 32px; }
+      .hero-metric-value { font-size: 22px; }
+
+      .about { padding: 80px 20px; }
+      .about-grid {
         grid-template-columns: 1fr;
+        gap: 0;
       }
+      .about-grid-divider {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--border-bright), transparent);
+      }
+      .stat-cell { padding: 28px 20px; }
+      .stat-value { font-size: 36px; }
 
-      .deal-price {
-        font-size: 24px;
-      }
+      .deals { padding: 80px 16px; }
+      .deals-grid { grid-template-columns: 1fr; }
+      .deal-price { font-size: 28px; }
 
-      .contact-info {
-        grid-template-columns: 1fr;
-      }
+      .contact { padding: 80px 20px; }
+      .contact-grid { grid-template-columns: 1fr; }
 
-      .btn-primary,
-      .btn-secondary {
-        font-size: 14px;
-        padding: 12px 24px;
-      }
+      .btn { padding: 14px 28px; font-size: 10px; }
+      .btn--large { padding: 16px 40px; }
+
+      .section-title { margin-bottom: 16px; }
+      .section-rule { margin-bottom: 36px; }
+      .section-body { margin-bottom: 40px; font-size: 15px; }
+
+      .geo-corner { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-buttons { flex-direction: column; align-items: center; }
+      .hero-metric-bar { flex-direction: column; gap: 24px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ======================== HERO ======================== -->
+  <!-- ═══════ NAV ═══════ -->
+  <nav class="nav">
+    <div class="nav-logo">Xyrr<span>.</span></div>
+    <ul class="nav-links">
+      <li>About</li>
+      <li>Deals</li>
+      <li>Contact</li>
+    </ul>
+  </nav>
+
+  <!-- ═══════ HERO ═══════ -->
   <header class="hero">
-    <div class="hero-inner">
-      <h1>Xyrr Investments</h1>
-      <hr class="hero-rule">
+    <div class="geo-grid"></div>
+    <div class="geo-diagonal"></div>
+    <div class="geo-corner geo-corner--tl"></div>
+    <div class="geo-corner geo-corner--tr"></div>
+    <div class="geo-corner geo-corner--bl"></div>
+    <div class="geo-corner geo-corner--br"></div>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow">Est. 2024</div>
+      <h1>Xyrr<br><em>Investments</em></h1>
+      <div class="hero-divider"></div>
       <p class="hero-tagline">Off-Market Real Estate Deals — Memphis &amp; Cleveland</p>
-      <p class="hero-subtagline">Cash buyers, flippers, and BRRRR investors — we move fast</p>
+      <p class="hero-sub">Cash buyers, flippers, and BRRRR investors — we move fast</p>
       <div class="hero-buttons">
-        <button class="btn-primary">View Active Deals</button>
-        <button class="btn-secondary">Contact Us</button>
+        <button class="btn btn--gold">View Active Deals</button>
+        <button class="btn btn--outline">Contact Us</button>
+      </div>
+
+      <div class="hero-metric-bar">
+        <div class="hero-metric">
+          <div class="hero-metric-value">$25K</div>
+          <div class="hero-metric-label">Lowest Ask</div>
+        </div>
+        <div class="hero-metric">
+          <div class="hero-metric-value">$280K</div>
+          <div class="hero-metric-label">Highest ARV</div>
+        </div>
+        <div class="hero-metric">
+          <div class="hero-metric-value">7</div>
+          <div class="hero-metric-label">Active Deals</div>
+        </div>
+        <div class="hero-metric">
+          <div class="hero-metric-value">2</div>
+          <div class="hero-metric-label">Markets</div>
+        </div>
       </div>
     </div>
   </header>
 
   <main>
 
-    <!-- ======================== ABOUT ======================== -->
-    <section class="section section--alt" id="about">
-      <div class="container">
-        <h2 class="section-headline">Who We Are</h2>
-        <hr class="section-accent">
+    <!-- ═══════ ABOUT ═══════ -->
+    <section class="about" id="about">
+      <div class="wrap">
+        <div class="section-label">About the Firm</div>
+        <h2 class="section-title">Who We Are</h2>
+        <hr class="section-rule">
         <p class="section-body">
           Xyrr Investments is a Memphis-based real estate wholesaling company founded by Alex and Jacob.
           We source deeply discounted off-market properties across Memphis, TN and Cleveland, OH.
           We work exclusively with cash buyers — no daisy chains, no games.
           Real numbers, real photos, real deals.
         </p>
-        <div class="stats-grid">
-          <div class="stat-box">
-            <div class="stat-number">7+</div>
-            <div class="stat-label">Active Deals</div>
+        <div class="about-grid">
+          <div class="stat-cell">
+            <div class="stat-value">7+</div>
+            <div class="stat-unit">Active Deals</div>
+            <div class="stat-desc">Updated weekly</div>
           </div>
-          <div class="stat-box">
-            <div class="stat-number">2</div>
-            <div class="stat-label">Markets</div>
+          <div class="about-grid-divider"></div>
+          <div class="stat-cell">
+            <div class="stat-value">2</div>
+            <div class="stat-unit">Markets</div>
+            <div class="stat-desc">Memphis &amp; Cleveland</div>
           </div>
-          <div class="stat-box">
-            <div class="stat-number">Cash</div>
-            <div class="stat-label">Buyers Only</div>
+          <div class="about-grid-divider"></div>
+          <div class="stat-cell">
+            <div class="stat-value">Cash</div>
+            <div class="stat-unit">Buyers Only</div>
+            <div class="stat-desc">No daisy chains</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ======================== ACTIVE DEALS ======================== -->
-    <section class="section" id="deals">
-      <div class="container">
-        <h2 class="section-headline">Active Deals</h2>
-        <hr class="section-accent">
-        <div class="deals-grid">
+    <!-- ═══════ DEALS ═══════ -->
+    <section class="deals" id="deals">
+      <div class="wrap">
+        <div class="section-label">Current Inventory</div>
+        <h2 class="section-title">Active Deals</h2>
+        <hr class="section-rule">
+      </div>
 
-          <!-- DEAL 1 -->
-          <article class="deal-card">
+      <div class="deals-grid">
+
+        <!-- DEAL 01 -->
+        <article class="deal">
+          <div class="deal-header">
+            <div class="deal-number">Deal 01 — Memphis</div>
             <h3 class="deal-address">1220 Pond St</h3>
-            <p class="deal-city">Memphis, TN 38106</p>
-            <p class="deal-specs">4 Bed / 2 Bath / 1,177 sqft</p>
-            <div class="deal-price">$60,000</div>
-            <p class="deal-arv">ARV: $120,000–$125,000</p>
-            <p class="deal-note">Est. Rehab: $25,000</p>
+            <div class="deal-city">Memphis, TN 38106</div>
+          </div>
+          <div class="deal-body">
+            <div class="deal-specs">4 Bed &middot; 2 Bath &middot; 1,177 sqft</div>
+            <div class="deal-financial">
+              <div class="deal-price-label">Asking Price</div>
+              <div class="deal-price">$60,000</div>
+              <div class="deal-meta">
+                <div class="deal-meta-row">
+                  <span class="deal-meta-key">ARV</span>
+                  <span class="deal-meta-val">$120,000–$125,000</span>
+                </div>
+                <div class="deal-meta-row">
+                  <span class="deal-meta-key">Est. Rehab</span>
+                  <span class="deal-meta-val">$25,000</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="deal-footer">
             <div class="deal-tags">
               <span class="deal-tag">Fix &amp; Flip</span>
               <span class="deal-tag">Buy &amp; Hold</span>
             </div>
             <button class="deal-btn">Get Details</button>
-          </article>
+          </div>
+        </article>
 
-          <!-- DEAL 2 -->
-          <article class="deal-card">
+        <!-- DEAL 02 -->
+        <article class="deal">
+          <div class="deal-header">
+            <div class="deal-number">Deal 02 — Memphis</div>
             <h3 class="deal-address">423 Laclede Ave</h3>
-            <p class="deal-city">Memphis, TN 38126</p>
-            <p class="deal-specs">3 Bed / 2 Bath / 1,450 sqft</p>
-            <div class="deal-price">$90,000</div>
-            <p class="deal-arv">ARV: $175,000–$190,000</p>
-            <p class="deal-note">Tenant in place @ $1,200/mo</p>
+            <div class="deal-city">Memphis, TN 38126</div>
+          </div>
+          <div class="deal-body">
+            <div class="deal-specs">3 Bed &middot; 2 Bath &middot; 1,450 sqft</div>
+            <div class="deal-financial">
+              <div class="deal-price-label">Asking Price</div>
+              <div class="deal-price">$90,000</div>
+              <div class="deal-meta">
+                <div class="deal-meta-row">
+                  <span class="deal-meta-key">ARV</span>
+                  <span class="deal-meta-val">$175,000–$190,000</span>
+                </div>
+                <div class="deal-meta-row">
+                  <span class="deal-meta-key">Tenant</span>
+                  <span class="deal-meta-val">$1,200/mo in place</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="deal-footer">
             <div class="deal-tags">
               <span class="deal-tag">Turnkey Rental</span>
               <span class="deal-tag">Cash Flow Day 1</span>
             </div>
             <button class="deal-btn">Get Details</button>
-          </article>
+          </div>
+        </article>
 
-          <!-- DEAL 3 -->
-          <article class="deal-card">
+        <!-- DEAL 03 — FEATURED -->
+        <article class="deal deal--featured">
+          <div class="deal-header">
+            <div class="deal-number">Deal 03 — Memphis &middot; $100K+ Spread</div>
             <h3 class="deal-address">1021 Chelsea Ave</h3>
-            <p class="deal-city">Memphis, TN 38107</p>
-            <p class="deal-specs">8 Rooms / 2 Bath / 2,304 sqft</p>
-            <div class="deal-price">$65,000</div>
-            <p class="deal-arv">ARV: $230,000–$280,000</p>
-            <p class="deal-note">$100K+ spread · Est. Rehab: $50,000–$60,000</p>
+            <div class="deal-city">Memphis, TN 38107</div>
+          </div>
+          <div class="deal-body">
+            <div class="deal-specs">8 Rooms &middot; 2 Bath &middot; 2,304 sqft</div>
+            <div class="deal-financial">
+              <div class="deal-price-label">Asking Price</div>
+              <div class="deal-price">$65,000</div>
+              <div class="deal-meta">
+                <div class="deal-meta-row">
+                  <span class="deal-meta-key">ARV</span>
+                  <span class="deal-meta-val">$230,000–$280,000</span>
+                </div>
+                <div class="deal-meta-row">
+                  <span class="deal-meta-key">Est. Rehab</span>
+                  <span class="deal-meta-val">$50,000–$60,000</span>
+                </div>
+              </div>
+              <div class="deal-note">$100K+ spread potential</div>
+            </div>
+          </div>
+          <div class="deal-footer">
             <div class="deal-tags">
               <span class="deal-tag">Airbnb</span>
               <span class="deal-tag">Room Rentals</span>
@@ -509,110 +915,192 @@
               <span class="deal-tag">Fix &amp; Flip</span>
             </div>
             <button class="deal-btn">Get Details</button>
-          </article>
+          </div>
+        </article>
 
-          <!-- DEAL 4 -->
-          <article class="deal-card">
+        <!-- DEAL 04 -->
+        <article class="deal">
+          <div class="deal-header">
+            <div class="deal-number">Deal 04 — Memphis</div>
             <h3 class="deal-address">1921 Cloverdale Dr</h3>
-            <p class="deal-city">Memphis, TN 38114</p>
-            <p class="deal-specs">2 Bed / 1 Bath / 824 sqft</p>
-            <div class="deal-price">$87,000</div>
-            <p class="deal-arv">&nbsp;</p>
-            <p class="deal-note">Rent $900/mo · Lease thru 9/30/2026</p>
+            <div class="deal-city">Memphis, TN 38114</div>
+          </div>
+          <div class="deal-body">
+            <div class="deal-specs">2 Bed &middot; 1 Bath &middot; 824 sqft</div>
+            <div class="deal-financial">
+              <div class="deal-price-label">Asking Price</div>
+              <div class="deal-price">$87,000</div>
+              <div class="deal-meta">
+                <div class="deal-meta-row">
+                  <span class="deal-meta-key">Rent</span>
+                  <span class="deal-meta-val">$900/mo</span>
+                </div>
+                <div class="deal-meta-row">
+                  <span class="deal-meta-key">Lease</span>
+                  <span class="deal-meta-val">Thru 9/30/2026</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="deal-footer">
             <div class="deal-tags">
               <span class="deal-tag">Stable Cash Flow</span>
               <span class="deal-tag">Tenant Occupied</span>
             </div>
             <button class="deal-btn">Get Details</button>
-          </article>
+          </div>
+        </article>
 
-          <!-- DEAL 5 -->
-          <article class="deal-card">
+        <!-- DEAL 05 -->
+        <article class="deal">
+          <div class="deal-header">
+            <div class="deal-number">Deal 05 — Memphis</div>
             <h3 class="deal-address">1760 S Wellington St</h3>
-            <p class="deal-city">Memphis, TN 38106</p>
-            <p class="deal-specs">5 Bed / 2 Bath / New Roof</p>
-            <div class="deal-price">$78,000</div>
-            <p class="deal-arv">ARV: $180,000</p>
-            <p class="deal-note">Appraisal-backed ARV</p>
+            <div class="deal-city">Memphis, TN 38106</div>
+          </div>
+          <div class="deal-body">
+            <div class="deal-specs">5 Bed &middot; 2 Bath &middot; New Roof</div>
+            <div class="deal-financial">
+              <div class="deal-price-label">Asking Price</div>
+              <div class="deal-price">$78,000</div>
+              <div class="deal-meta">
+                <div class="deal-meta-row">
+                  <span class="deal-meta-key">ARV</span>
+                  <span class="deal-meta-val">$180,000</span>
+                </div>
+              </div>
+              <div class="deal-note">Appraisal-backed ARV</div>
+            </div>
+          </div>
+          <div class="deal-footer">
             <div class="deal-tags">
               <span class="deal-tag">Full Renovation</span>
               <span class="deal-tag">Fix &amp; Flip</span>
             </div>
             <button class="deal-btn">Get Details</button>
-          </article>
+          </div>
+        </article>
 
-          <!-- DEAL 6 -->
-          <article class="deal-card">
+        <!-- DEAL 06 -->
+        <article class="deal">
+          <div class="deal-header">
+            <div class="deal-number">Deal 06 — Cleveland</div>
             <h3 class="deal-address">12109 Gay Ave</h3>
-            <p class="deal-city">Cleveland, OH 44105</p>
-            <p class="deal-specs">3 Bed / 2 Bath / 1,420 sqft</p>
-            <div class="deal-price">$39,000</div>
-            <p class="deal-arv">ARV: $115,000</p>
-            <p class="deal-note">New roof + new electrical done · Close by 3/25/26 · Est. Rehab: $50,000–$60,000</p>
+            <div class="deal-city">Cleveland, OH 44105</div>
+          </div>
+          <div class="deal-body">
+            <div class="deal-specs">3 Bed &middot; 2 Bath &middot; 1,420 sqft</div>
+            <div class="deal-financial">
+              <div class="deal-price-label">Asking Price</div>
+              <div class="deal-price">$39,000</div>
+              <div class="deal-meta">
+                <div class="deal-meta-row">
+                  <span class="deal-meta-key">ARV</span>
+                  <span class="deal-meta-val">$115,000</span>
+                </div>
+                <div class="deal-meta-row">
+                  <span class="deal-meta-key">Est. Rehab</span>
+                  <span class="deal-meta-val">$50,000–$60,000</span>
+                </div>
+                <div class="deal-meta-row">
+                  <span class="deal-meta-key">Close By</span>
+                  <span class="deal-meta-val">3/25/2026</span>
+                </div>
+              </div>
+              <div class="deal-note">New roof + new electrical done</div>
+            </div>
+          </div>
+          <div class="deal-footer">
             <div class="deal-tags">
               <span class="deal-tag">Fix &amp; Flip</span>
               <span class="deal-tag">BRRRR</span>
             </div>
             <button class="deal-btn">Get Details</button>
-          </article>
+          </div>
+        </article>
 
-          <!-- DEAL 7 -->
-          <article class="deal-card">
+        <!-- DEAL 07 — FEATURED -->
+        <article class="deal deal--featured">
+          <div class="deal-header">
+            <div class="deal-number">Deal 07 — Cleveland &middot; Section 8</div>
             <h3 class="deal-address">14001 Scioto Ave</h3>
-            <p class="deal-city">East Cleveland, OH 44112</p>
-            <p class="deal-specs">3 Bed / 1.5 Bath / 1,608 sqft / 2-Car Garage</p>
-            <div class="deal-price">$25,000</div>
-            <p class="deal-arv">ARV: $105,000</p>
-            <p class="deal-note">Rent $1,300–$1,450/mo · Section 8 eligible · Close by 5/7/26</p>
+            <div class="deal-city">East Cleveland, OH 44112</div>
+          </div>
+          <div class="deal-body">
+            <div class="deal-specs">3 Bed &middot; 1.5 Bath &middot; 1,608 sqft &middot; 2-Car Garage</div>
+            <div class="deal-financial">
+              <div class="deal-price-label">Asking Price</div>
+              <div class="deal-price">$25,000</div>
+              <div class="deal-meta">
+                <div class="deal-meta-row">
+                  <span class="deal-meta-key">ARV</span>
+                  <span class="deal-meta-val">$105,000</span>
+                </div>
+                <div class="deal-meta-row">
+                  <span class="deal-meta-key">Rent</span>
+                  <span class="deal-meta-val">$1,300–$1,450/mo</span>
+                </div>
+                <div class="deal-meta-row">
+                  <span class="deal-meta-key">Close By</span>
+                  <span class="deal-meta-val">5/7/2026</span>
+                </div>
+              </div>
+              <div class="deal-note">Section 8 eligible</div>
+            </div>
+          </div>
+          <div class="deal-footer">
             <div class="deal-tags">
               <span class="deal-tag">Value-Add</span>
               <span class="deal-tag">BRRRR</span>
               <span class="deal-tag">Section 8</span>
             </div>
             <button class="deal-btn">Get Details</button>
-          </article>
+          </div>
+        </article>
 
-        </div>
       </div>
     </section>
 
-    <!-- ======================== CONTACT ======================== -->
-    <section class="section section--alt" id="contact">
-      <div class="container">
-        <h2 class="section-headline">Ready to Move?</h2>
-        <hr class="section-accent">
+    <!-- ═══════ CONTACT ═══════ -->
+    <section class="contact" id="contact">
+      <div class="wrap">
+        <div class="section-label">Get In Touch</div>
+        <h2 class="section-title">Ready to Move?</h2>
+        <hr class="section-rule">
         <p class="section-body">
           We work with serious cash buyers only. Reach out and we'll get you the full deal package — photos, comps, walkthrough.
         </p>
-        <div class="contact-info">
-          <div class="contact-block">
-            <div class="contact-icon">&#x1F4E7;</div>
-            <div class="contact-label">Email</div>
-            <div class="contact-value">info@xyrrinvestments.com</div>
+
+        <div class="contact-grid">
+          <div class="contact-cell">
+            <div class="contact-icon">Email</div>
+            <div class="contact-val">info@xyrrinvestments.com</div>
+            <div class="contact-hint">Response within 24h</div>
           </div>
-          <div class="contact-block">
-            <div class="contact-icon">&#x1F4F1;</div>
-            <div class="contact-label">Phone</div>
-            <div class="contact-value">(901) 555-0199</div>
+          <div class="contact-cell">
+            <div class="contact-icon">Phone</div>
+            <div class="contact-val">(901) 555-0199</div>
+            <div class="contact-hint">Mon–Sat 9am–7pm CST</div>
           </div>
-          <div class="contact-block">
-            <div class="contact-icon">&#x1F4CD;</div>
-            <div class="contact-label">Location</div>
-            <div class="contact-value">Memphis, TN</div>
+          <div class="contact-cell">
+            <div class="contact-icon">Location</div>
+            <div class="contact-val">Memphis, TN</div>
+            <div class="contact-hint">Serving Memphis &amp; Cleveland</div>
           </div>
         </div>
+
         <div class="contact-btn-wrap">
-          <button class="btn-primary">Send Message</button>
+          <button class="btn btn--gold btn--large">Send Message</button>
         </div>
       </div>
     </section>
 
   </main>
 
-  <!-- ======================== FOOTER ======================== -->
-  <footer>
-    <p class="footer-line">&copy; 2025 Xyrr Investments LLC — Memphis, TN</p>
-    <p class="footer-line">Off-market wholesaling | Memphis | Cleveland</p>
+  <!-- ═══════ FOOTER ═══════ -->
+  <footer class="footer">
+    <p class="footer-main">&copy; 2025 Xyrr Investments LLC — Memphis, TN</p>
+    <p class="footer-sub">Off-market wholesaling <span>&middot;</span> Memphis <span>&middot;</span> Cleveland</p>
   </footer>
 
 </body>
